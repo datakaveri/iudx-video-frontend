@@ -70,9 +70,8 @@ export default class StreamAction {
 
             return dispatch({
                 type: StreamAction.STREAM_STATUS_RECEIVED,
-                isSocket: true,
                 types: [StreamAction.STREAM_STATUS_RECEIVED, StreamAction.STREAM_STATUS_SUCCESS, StreamAction.STREAM_STATUS_FAIL],
-                promise: (socket) => socket.on('stream-status', streamStatus),
+                promise: () => streamStatus([]),
             });
         };
     }

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import NavBar from '../shared/nav-bar/NavBar';
 import { Button, Tab, Tabs } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
-import socketIOClient from 'socket.io-client';
 import { config } from '../../config';
 import { connect } from 'react-redux';
 import Table from 'react-bootstrap/Table';
@@ -58,7 +57,6 @@ const NginxControl = (props) => {
     };
 
     useEffect(() => {
-        const socket = socketIOClient(config.ENDPOINT);
 
         const updateNginxServerStatus = (data) => {
             let streams;
@@ -77,15 +75,6 @@ const NginxControl = (props) => {
             setNginxStreams(streams);
         };
 
-        socket.on('nginx-statistics', (data) => {
-            updateNginxServerStatus(data);
-        });
-
-        socket.on('nginx-down', () => {
-            setNginxStreams([]);
-        });
-
-        return () => socket.disconnect();
     }, []);
 
     const copyToClipboard = (e) => {

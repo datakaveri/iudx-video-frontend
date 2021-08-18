@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import NavBar from '../shared/nav-bar/NavBar';
-import socketIOClient from 'socket.io-client';
-import { config } from '../../config';
 import { Tab, Tabs } from 'react-bootstrap';
 import { Container, Row, Col } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
@@ -15,7 +13,6 @@ const RtspControl = () => {
     const [rtspStreams, setRtspStreams] = useState([]);
 
     useEffect(() => {
-        const socket = socketIOClient(config.ENDPOINT);
 
         const updateRtspServerStatus = (data) => {
             if (data) {
@@ -24,15 +21,6 @@ const RtspControl = () => {
             }
         };
 
-        socket.on('rtsp-server-status', (data) => {
-            updateRtspServerStatus(data);
-        });
-
-        socket.on('rtsp-down', () => {
-            updateRtspServerStatus([]);
-        });
-
-        return () => socket.disconnect();
     }, []);
 
     return (

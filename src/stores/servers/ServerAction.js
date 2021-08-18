@@ -43,9 +43,8 @@ export default class ServerAction {
 
             return dispatch({
                 type: ServerAction.CONTAINER_STATUS_RECEIVED,
-                isSocket: true,
                 types: [ServerAction.CONTAINER_STATUS_RECEIVED, ServerAction.CONTAINER_STATUS_SUCCESS, ServerAction.CONTAINER_STATUS_FAIL],
-                promise: (socket) => socket.on('container-status', containerStatus),
+                promise: () => containerStatus([]),
             });
         };
     }
@@ -61,9 +60,8 @@ export default class ServerAction {
 
             return dispatch({
                 type: ServerAction.NGINX_STATS_RECEIVED,
-                isSocket: true,
                 types: [ServerAction.NGINX_STATS_RECEIVED, ServerAction.NGINX_STATS_SUCCESS, ServerAction.NGINX_STATS_FAIL],
-                promise: (socket) => socket.on('nginx-statistics', containerStatus),
+                promise: () => containerStatus([]),
             });
         };
     }
@@ -79,9 +77,8 @@ export default class ServerAction {
 
             return dispatch({
                 type: ServerAction.RTSP_STATS_RECEIVED,
-                isSocket: true,
                 types: [ServerAction.RTSP_STATS_RECEIVED, ServerAction.RTSP_STATS_SUCCESS, ServerAction.RTSP_STATS_FAIL],
-                promise: (socket) => socket.on('rtsp-server-status', containerStatus),
+                promise: () => containerStatus([]),
             });
         };
     }
