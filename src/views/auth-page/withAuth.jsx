@@ -33,7 +33,6 @@ const withAuth = (ComponentToProtect) =>
 
         useEffect(() => {
             if (!(redirectLogin || loading)) {
-                dispatch(ServerAction.containerStatusReceive());
                 dispatch(ServerAction.nginxStatsReceive());
                 dispatch(ServerAction.rtspServerStatsReceive());
                 dispatch(StreamAction.streamStatusReceive());
