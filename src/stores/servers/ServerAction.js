@@ -1,5 +1,3 @@
-import ServerEffect from './ServerEffect';
-import ActionUtility from '../../utilities/ActionUtility';
 
 export default class ServerAction {
     static NGINX_STATS_RECEIVED = 'ServerAction.NGINX_STATS_RECEIVED';

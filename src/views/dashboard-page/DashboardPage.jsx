@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Table } from 'react-bootstrap';
+import { Row, Table } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -39,7 +39,7 @@ const tdStyle = {
 };
 
 const Dashboard = (props) => {
-    const { dispatch, nginxStreams, rtspStreams, streamStatus } = props;
+    const { dispatch, nginxStreams, streamStatus } = props;
 
     const copyToClipboard = (e) => {
         e.target.select();
