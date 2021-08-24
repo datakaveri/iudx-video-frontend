@@ -2,19 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import ServerAction from '../../stores/servers/ServerAction';
-import SocketAction from '../../stores/socket/SocketAction';
 import { connect } from 'react-redux';
 import StreamAction from 'stores/stream/StreamAction';
 
-const mapStateToProps = (state, ownProps) => {
-    return {
-        socketConnected: state.socketReducer.socketConnected,
-    };
-};
-
 const withAuth = (ComponentToProtect) =>
-    connect(mapStateToProps)((props) => {
-        const { dispatch, socketConnected } = props;
+    connect()((props) => {
+        const { dispatch } = props;
 
         const [loading, setLoading] = useState(true);
 
@@ -39,15 +32,12 @@ const withAuth = (ComponentToProtect) =>
         }, []);
 
         useEffect(() => {
-            if (!(socketConnected || redirectLogin || loading)) {
-                dispatch(SocketAction.connect());
-
-                dispatch(ServerAction.containerStatusReceive());
+            if (!(redirectLogin || loading)) {
                 dispatch(ServerAction.nginxStatsReceive());
                 dispatch(ServerAction.rtspServerStatsReceive());
                 dispatch(StreamAction.streamStatusReceive());
             }
-        }, [dispatch, socketConnected, loading, redirectLogin]);
+        }, [dispatch, loading, redirectLogin]);
 
         if (loading) return null;
 

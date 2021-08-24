@@ -6,10 +6,9 @@ import reduxFreeze from 'redux-freeze';
 import environment from 'environment';
 import rootReducer from './rootReducer';
 
-import SocketMiddleware from '../middlewares/SocketMiddleware';
 
-const Store = (initialState, history, socket) => {
-    const middleware = [environment.isDevelopment ? reduxFreeze : null, thunk, routerMiddleware(history), SocketMiddleware(socket)].filter(Boolean);
+const Store = (initialState, history) => {
+    const middleware = [environment.isDevelopment ? reduxFreeze : null, thunk, routerMiddleware(history)].filter(Boolean);
 
     const store = createStore(rootReducer(history), initialState, applyMiddleware(...middleware));
     // const store = createStore(rootReducer(history), initialState, composeWithDevTools(applyMiddleware(...middleware)));

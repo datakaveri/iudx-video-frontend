@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
-import { Row, Col, Table } from 'react-bootstrap';
+import React from 'react';
+import { Row, Table } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -10,14 +9,12 @@ import moment from 'moment';
 
 import { config } from '../../config';
 import NavBar from '../shared/nav-bar/NavBar';
-import ServerAction from '../../stores/servers/ServerAction';
 import RouteEnum from '../../constants/RoutesEnum';
 
 import './DashboardPage.scss';
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        servers: state.serverReducer.servers,
         nginxStreams: state.serverReducer.nginxStreams,
         rtspStreams: state.serverReducer.rtspStreams,
         streamStatus: state.streamReducer.streamStatus,
@@ -42,50 +39,7 @@ const tdStyle = {
 };
 
 const Dashboard = (props) => {
-    const { dispatch, servers, nginxStreams, rtspStreams, streamStatus } = props;
-    useEffect(() => {
-        dispatch(ServerAction.requestServers());
-    }, [dispatch]);
-
-    const changeDisableStatus = (index, status) => {
-        const updateServer = {
-            index: index,
-            disabled: status,
-        };
-        dispatch(ServerAction.updateServers(updateServer));
-    };
-
-    const start_Server = async (serverId) => {
-        changeDisableStatus(serverId, true);
-
-        const data = {
-            serverName: servers[serverId].container,
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-        };
-        try {
-            await axios.post('/start-server', data, { headers });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const stop_Server = async (serverId) => {
-        changeDisableStatus(serverId, true);
-
-        const data = {
-            serverName: servers[serverId].container,
-        };
-        const headers = {
-            'Content-Type': 'application/json',
-        };
-        try {
-            await axios.post('/stop-server', data, { headers });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const { dispatch, nginxStreams, streamStatus } = props;
 
     const copyToClipboard = (e) => {
         e.target.select();
@@ -100,66 +54,7 @@ const Dashboard = (props) => {
         <div>
             <NavBar />
 
-            <Table striped bordered hover style={tdStyle}>
-                <thead>
-                    <tr>
-                        <th>Server</th>
-                        <th>Status</th>
-                        <th>Start/Stop</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(servers) &&
-                        servers.map((server, i) => (
-                            <tr key={i}>
-                                <td>
-                                    <h5>{servers[i].name}</h5>
-                                </td>
-                                <td>
-                                    {servers[i].running ? (
-                                        servers[i].disabled ? (
-                                            <span>Stopping the server...</span>
-                                        ) : (
-                                            <span>Server is running</span>
-                                        )
-                                    ) : servers[i].disabled ? (
-                                        <span>Starting the server...</span>
-                                    ) : (
-                                        <span> Server is not running</span>
-                                    )}
-                                </td>
-                                <td>
-                                    {servers[i].running ? (
-                                        <Button disabled={servers[i].disabled} onClick={() => stop_Server(i)}>
-                                            STOP THE SERVER
-                                        </Button>
-                                    ) : (
-                                        <Button disabled={servers[i].disabled} onClick={() => start_Server(i)}>
-                                            START THE SERVER
-                                        </Button>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
             <Row style={cardRowStyle}>
-                <Card style={cardStyle}>
-                    <Card.Body>
-                        <Card.Title>Nginx RTMP</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">Detailed status</Card.Subtitle>
-                        <Button onClick={() => moveToPath(RouteEnum.NginRtmpControl)}>Open</Button>
-                    </Card.Body>
-                </Card>
-
-                <Card style={cardStyle}>
-                    <Card.Body>
-                        <Card.Title>RTSP Simple Server</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">Detailed Status</Card.Subtitle>
-                        <Button onClick={() => moveToPath(RouteEnum.RtspServerControl)}>Open</Button>
-                    </Card.Body>
-                </Card>
-
                 <Card style={cardStyle}>
                     <Card.Body>
                         <Card.Title>Kurento Application</Card.Title>
@@ -251,37 +146,6 @@ const Dashboard = (props) => {
                 </tbody>
             </Table>
 
-            <h4 style={{ marginTop: '50px', paddingLeft: '20px' }}>RTSP Server</h4>
-            <Row>
-                <Col style={{ paddingLeft: '35px' }}>
-                    <h5>Total No. of publishers : {rtspStreams.publishers} </h5>
-                </Col>
-                <Col>
-                    <h5>Total No. of Clients : {rtspStreams.clients} </h5>
-                </Col>
-            </Row>
-
-            <Table striped bordered hover style={tdStyle}>
-                <thead>
-                    <tr>
-                        <th>Available RTSP streams</th>
-                        <th>No. of clients connected</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(rtspStreams.streams) &&
-                        rtspStreams.streams.map((stream, i) => (
-                            <tr key={i}>
-                                <td>
-                                    <Form.Control plaintext readOnly defaultValue={rtspStreams.streams[i].url} onFocus={copyToClipboard} />
-                                </td>
-                                <td>
-                                    <h5>{rtspStreams.streams[i].nClients}</h5>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
         </div>
     );
 };

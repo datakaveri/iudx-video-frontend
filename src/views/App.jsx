@@ -12,8 +12,6 @@ const RegisterPage = lazy(() => import('./auth-page/register-page/RegisterPage')
 const EmailConfirmPage = lazy(() => import('./auth-page/email-confirm-page/EmailConfirmPage'));
 const DashboardPage = lazy(() => import('./dashboard-page/DashboardPage'));
 const RecordPage = lazy(() => import('./record-page/RecordPage'));
-const NginxRtmpControlPage = lazy(() => import('./nginx-rtmp-control-page/NginxRtmpControlPage'));
-const RtspServerControlPage = lazy(() => import('./rtsp-server-control-page/RtspServerControlPage'));
 const StreamPage = lazy(() => import('./stream-page/StreamPage'));
 const AutoRoutingPage = lazy(() => import('./auto-routing-page/AutoRoutingPage'));
 
@@ -32,8 +30,6 @@ const App = (props) => {
                         <Route path={RouteEnum.Record} component={withAuth(RecordPage)} />
                         <Route path={RouteEnum.Stream} component={withAuth(StreamPage)} />
                         <Route path={RouteEnum.AutoRouting} component={withAuth(AutoRoutingPage)} />
-                        <Route path={RouteEnum.NginRtmpControl} component={withAuth(NginxRtmpControlPage)} />
-                        <Route path={RouteEnum.RtspServerControl} component={withAuth(RtspServerControlPage)} />
                         <Route path={RouteEnum.FilesDownload} component={withAuth(FilesDownloadPage)} />
                     </Switch>
                 </Suspense>
