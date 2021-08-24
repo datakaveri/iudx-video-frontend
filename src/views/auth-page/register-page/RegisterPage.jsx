@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import environment from 'environment';
 import FormContainer from '../../shared/form-container/FormContainer';
 import { connect } from 'react-redux';
 import NavBar from '../../shared/nav-bar/NavBar';
@@ -11,6 +12,7 @@ const RegisterScreen = (props) => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [role, setRole] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -27,12 +29,13 @@ const RegisterScreen = (props) => {
                 name,
                 email,
                 password,
+                role,
             };
             const headers = {
                 'Content-Type': 'application/json',
             };
             try {
-                let response = await axios.post('/register', data, { headers });
+                let response = await axios.post(`${environment.api.server}/api/auth/signup`, data, { headers });
                 setVariant('success');
                 setMessage(response.data);
             } catch (error) {
@@ -59,6 +62,15 @@ const RegisterScreen = (props) => {
                     <Form.Group controlId="email">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} required></Form.Control>
+                    </Form.Group>
+
+                    <Form.Group controlId="role">
+                        <Form.Label>Role</Form.Label>
+                        <Form.Control as="select" value={role} onChange={(e) => setRole(e.target.value)} required>
+                            <option value="lms-admin">LMS Admin</option>
+                            <option value="provider">Provider</option>
+                            <option value="consumer">Consumer</option>
+                        </Form.Control>
                     </Form.Group>
 
                     <Form.Group controlId="password">

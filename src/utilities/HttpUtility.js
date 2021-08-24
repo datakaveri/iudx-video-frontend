@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AuthService from 'services/AuthService';
 import HttpErrorResponseModel from '../models/HttpErrorResponseModel';
 
 const RequestMethod = {
@@ -64,6 +65,7 @@ export default class HttpUtility {
         }
 
         try {
+            const token = AuthService.getToken();
             const axiosRequestConfig = {
                 ...config,
                 method: restRequest.method,
@@ -71,6 +73,9 @@ export default class HttpUtility {
                 withCredentials: config && config.data?.withCredentials ? true : false,
                 headers: {
                     ...config?.headers,
+                    ...(token && {
+                        Authorization: `Bearer ${token}`,
+                    }),
                 },
             };
 

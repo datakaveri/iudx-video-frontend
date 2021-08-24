@@ -4,7 +4,7 @@ import HttpUtility from '../../utilities/HttpUtility';
 
 export default class AuthEffect {
     static async registerUser(data) {
-        const endpoint = `${environment.api.server}/register`;
+        const endpoint = `${environment.api.server}/api/auth/signup`;
 
         const response = await HttpUtility.post(endpoint, data);
 

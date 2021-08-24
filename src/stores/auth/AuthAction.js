@@ -11,6 +11,8 @@ export default class AuthAction {
     static LOGOUT_USER = 'AuthAction.LOGOUT_USER';
     static LOGOUT_USER_FINISHED = 'AuthAction.LOGOUT_USER_FINISHED';
 
+    static USER_DATA = 'AuthAction.USER_DATA';
+
     static registerUser(userData) {
         return async (dispatch, getState) => {
             await ActionUtility.createThunkEffect(dispatch, AuthAction.REGISTER_USER, AuthEffect.registerUser, userData);
@@ -27,5 +29,9 @@ export default class AuthAction {
         return async (dispatch, getState) => {
             await ActionUtility.createThunkEffect(dispatch, AuthAction.LOGOUT_USER, AuthEffect.logoutUser, data);
         };
+    }
+
+    static saveUser(data) {
+        return ActionUtility.createAction(AuthAction.USER_DATA, data);
     }
 }

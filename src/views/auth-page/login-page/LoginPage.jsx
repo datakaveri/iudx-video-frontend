@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import environment from 'environment';
 import FormContainer from '../../shared/form-container/FormContainer';
 import { connect } from 'react-redux';
 import NavBar from '../../shared/nav-bar/NavBar';
 import axios from 'axios';
+import AuthService from 'services/AuthService';
+import AuthAction from 'stores/auth/AuthAction';
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -23,7 +26,7 @@ const Login = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         //dispatch(AuthAction.loginUser({ email, password, withCredentials: true }));
-        const data = {
+        const loginData = {
             email,
             password,
             withCredentials: true,
@@ -32,7 +35,17 @@ const Login = (props) => {
             'Content-Type': 'application/json',
         };
         try {
-            await axios.post('/login', data, { headers });
+            let { data } = await axios.post(`${environment.api.server}/api/auth/token`, loginData, { headers });
+            const loginHeaders = {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${data.token}`,
+            };
+            await axios.get(`${environment.api.server}/api/auth/login`, { headers: loginHeaders });
+            AuthService.setToken(data.token);
+
+            // Decrypt token and update data in store
+            let tokenData = AuthService.decryptToken(data.token);
+            AuthAction.saveUser(tokenData);
             history.push('/');
         } catch (error) {
             if (error.response) {

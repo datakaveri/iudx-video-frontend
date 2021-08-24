@@ -4,6 +4,7 @@ import AuthAction from './AuthAction';
 export default class AuthReducer extends BaseReducer {
     initialState = {
         token: null,
+        user: {},
     };
 
     [AuthAction.REGISTER_USER_FINISHED](state, action) {
@@ -24,6 +25,13 @@ export default class AuthReducer extends BaseReducer {
         return {
             ...state,
             token: null,
+        };
+    }
+
+    [AuthAction.USER_DATA](state, action) {
+        return {
+            ...state,
+            user: action.payload,
         };
     }
 }
