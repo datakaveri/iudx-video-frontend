@@ -28,9 +28,9 @@ export default class AuthEffect {
     }
 
     static async logoutUser(data) {
-        const endpoint = `${environment.api.server}/logout`;
+        const endpoint = `${environment.api.server}/api/auth/logout`;
 
-        const response = await HttpUtility.post(endpoint, data);
+        const response = await HttpUtility.get(endpoint);
 
         if (response instanceof HttpErrorResponseModel) {
             return response;
