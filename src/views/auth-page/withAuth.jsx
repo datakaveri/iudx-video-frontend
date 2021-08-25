@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom';
 import ServerAction from '../../stores/servers/ServerAction';
 import { connect } from 'react-redux';
 import StreamAction from 'stores/stream/StreamAction';
+import AuthService from 'services/AuthService';
+import AuthAction from 'stores/auth/AuthAction';
 
 const mapStateToProps = (state) => ({
     user: state.authReducer.user
@@ -19,6 +21,11 @@ const withAuth = (ComponentToProtect) =>
         useEffect(() => {
             const validateUser = async () => {
                 try {
+                    const token = AuthService.getToken();
+                    if (token) {
+                        let tokenData = AuthService.decryptToken(token);
+                        dispatch(AuthAction.saveUser(tokenData));
+                    }
                     if (user && user.userId) {
                         setLoading(false);
                     } else {

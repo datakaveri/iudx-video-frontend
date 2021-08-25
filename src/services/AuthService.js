@@ -1,7 +1,12 @@
 import jwt from 'jwt-decode';
 
 const getToken = () => {
-    return window.sessionStorage.getItem('token');
+    const token = window.sessionStorage.getItem('token');
+    const tokenData = jwt(token);
+    if (Date.now() >= tokenData.exp * 1000) {
+        return null;
+    }
+    return token;
 };
 
 const setToken = (token) => {
