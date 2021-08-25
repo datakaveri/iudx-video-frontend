@@ -35,9 +35,7 @@ const NavBar = (props) => {
                 {props.logout && (
                     <div className="navbar-nav ml-auto">
                         <li className="nav-item">
-                            <Link to={'/login'} className="nav-link" onClick={logout}>
-                                Logout
-                            </Link>
+                            <button className="logout-btn" onClick={logout}>Logout</button>
                         </li>
                     </div>
                 )}

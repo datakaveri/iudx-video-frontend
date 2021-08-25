@@ -25,9 +25,9 @@ const App = (props) => {
                 <Suspense fallback={<Loading isActive={true} />}>
                     <Switch>
                         <Route path={RouteEnum.Login} component={LoginPage} />
-                        <Route path={RouteEnum.Admin} component={AdminPage} />
                         <Route path={RouteEnum.Register} component={RegisterPage} />
                         <Route path={RouteEnum.Confirm} component={EmailConfirmPage} />
+                        <Route path={RouteEnum.Admin} component={withAuth(AdminPage)} />
                         <Route exact path={RouteEnum.Home} component={withAuth(DashboardPage)} />
                         <Route path={RouteEnum.Record} component={withAuth(RecordPage)} />
                         <Route path={RouteEnum.Stream} component={withAuth(StreamPage)} />
