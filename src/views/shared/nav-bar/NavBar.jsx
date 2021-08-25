@@ -3,16 +3,17 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import AuthAction from '../../../stores/auth/AuthAction';
 
+import './NavBar.scss';
 import logo from '../../../assets/images/IUDX-logo.png';
 
-const logoStyle = {
-    maxWidth: '135px',
-    maxHeight: '40px',
-    marginRight: '10px',
+const mapStateToProps = (state, ownProps) => {
+    return {
+        user: state.authReducer.user,
+    };
 };
 
 const NavBar = (props) => {
-    const { dispatch } = props;
+    const { dispatch, user } = props;
 
     const logout = () => {
         dispatch(AuthAction.logoutUser({ withCredentials: true }));
@@ -22,9 +23,11 @@ const NavBar = (props) => {
         <div>
             <nav className="navbar navbar-light bg-light navbar-expand">
                 <Link to={'/'} className="navbar-brand">
-                    <img style={logoStyle} src={logo} alt="Admin" />
+                    <img className="logo-style" src={logo} alt="Admin" />
                     IUVDX Admin
                 </Link>
+
+                {user && user.role === 'cms-admin' && <Link to="/admin" className="nav-item nav-link">Admin</Link>}
 
                 {props.logout && (
                     <div className="navbar-nav ml-auto">
@@ -44,4 +47,4 @@ NavBar.defaultProps = {
     logout: true,
 };
 
-export default connect()(NavBar);
+export default connect(mapStateToProps)(NavBar);

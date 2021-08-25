@@ -8,6 +8,7 @@ import FilesDownloadPage from './files-download-page/FilesDownloadPage';
 
 // lazy loading pages
 const LoginPage = lazy(() => import('./auth-page/login-page/LoginPage'));
+const AdminPage = lazy(() => import('./admin-page/AdminPage'));
 const RegisterPage = lazy(() => import('./auth-page/register-page/RegisterPage'));
 const EmailConfirmPage = lazy(() => import('./auth-page/email-confirm-page/EmailConfirmPage'));
 const DashboardPage = lazy(() => import('./dashboard-page/DashboardPage'));
@@ -24,6 +25,7 @@ const App = (props) => {
                 <Suspense fallback={<Loading isActive={true} />}>
                     <Switch>
                         <Route path={RouteEnum.Login} component={LoginPage} />
+                        <Route path={RouteEnum.Admin} component={AdminPage} />
                         <Route path={RouteEnum.Register} component={RegisterPage} />
                         <Route path={RouteEnum.Confirm} component={EmailConfirmPage} />
                         <Route exact path={RouteEnum.Home} component={withAuth(DashboardPage)} />

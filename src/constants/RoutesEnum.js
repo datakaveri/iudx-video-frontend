@@ -1,5 +1,6 @@
 const RoutesEnum = {
     Home: '/',
+    Admin: '/admin',
     Login: '/login',
     Register: '/register',
     Confirm: '/confirm/:confirmationCode',

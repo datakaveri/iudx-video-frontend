@@ -1,0 +1,24 @@
+
+.stream-activity-status-container {
+    display: flex;
+    justify-content: center;
+}
+
+.green-circle {
+    background: green;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.red-circle {
+    background: red;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+h4 {
+    margin-top: 50px;
+    padding-left: 20px;
+}

@@ -6,6 +6,7 @@ import StreamReducer from './stream/StreamReducer';
 import RoutingReducer from './routing/RoutingReducer';
 import AuthReducer from './auth/AuthReducer';
 import FilesReducer from './files/FilesReducer';
+import CameraReducer from './camera/CameraReducer';
 
 const Reducer = (history) => {
     const reducerMap = {
@@ -16,6 +17,7 @@ const Reducer = (history) => {
         routingReducer: new RoutingReducer().reducer,
         authReducer: new AuthReducer().reducer,
         filesReducer: new FilesReducer().reducer,
+        cameraReducer: new CameraReducer().reducer,
     };
 
     return combineReducers(reducerMap);
