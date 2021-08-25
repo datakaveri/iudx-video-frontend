@@ -1,18 +1,23 @@
-.stream-activity-status-container {
+
+.table-wrapper{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    margin-top: 40px; 
 }
 
-.green-circle {
-    background: green;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
+.table-wrapper > *:first-child{
+    margin-left: 20px; 
 }
 
-.red-circle {
-    background: red;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
+.table-wrapper > *:last-child{
+    margin-right: 50px; 
+}
+
+.table {
+    width: 98%;
+    margin: auto;
+}
+
+.td-stream-column {
+    text-align: center;
 }
