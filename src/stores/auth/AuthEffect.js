@@ -1,4 +1,5 @@
 import environment from 'environment';
+import AuthService from 'services/AuthService';
 import HttpErrorResponseModel from '../../models/HttpErrorResponseModel';
 import HttpUtility from '../../utilities/HttpUtility';
 
@@ -27,14 +28,16 @@ export default class AuthEffect {
         return response;
     }
 
-    static async logoutUser(data) {
+    static async logoutUser() {
         const endpoint = `${environment.api.server}/api/auth/logout`;
-
+        
         const response = await HttpUtility.get(endpoint);
-
+        
         if (response instanceof HttpErrorResponseModel) {
             return response;
         }
+
+        AuthService.removeToken();
 
         return response;
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import AuthAction from '../../../stores/auth/AuthAction';
 
 import './NavBar.scss';
@@ -16,7 +17,9 @@ const NavBar = (props) => {
     const { dispatch, user } = props;
 
     const logout = () => {
-        dispatch(AuthAction.logoutUser({ withCredentials: true }));
+        dispatch(AuthAction.logoutUser()).then(() => {
+            dispatch(push('/login'));
+        });
     };
 
     return (

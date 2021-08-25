@@ -25,9 +25,9 @@ export default class AuthAction {
         };
     }
 
-    static logoutUser(data) {
+    static logoutUser() {
         return async (dispatch, getState) => {
-            await ActionUtility.createThunkEffect(dispatch, AuthAction.LOGOUT_USER, AuthEffect.logoutUser, data);
+            await ActionUtility.createThunkEffect(dispatch, AuthAction.LOGOUT_USER, AuthEffect.logoutUser);
         };
     }
 

@@ -25,6 +25,8 @@ const withAuth = (ComponentToProtect) =>
                     if (token) {
                         let tokenData = AuthService.decryptToken(token);
                         dispatch(AuthAction.saveUser(tokenData));
+                    } else {
+                        setRedirectLogin(true);
                     }
                     if (user && user.userId) {
                         setLoading(false);
