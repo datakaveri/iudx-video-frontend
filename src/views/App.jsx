@@ -27,12 +27,12 @@ const App = (props) => {
                         <Route path={RouteEnum.Login} component={LoginPage} />
                         <Route path={RouteEnum.Register} component={RegisterPage} />
                         <Route path={RouteEnum.Confirm} component={EmailConfirmPage} />
-                        <Route path={RouteEnum.Admin} component={withAuth(AdminPage)} />
+                        <Route path={RouteEnum.Admin} component={withAuth(AdminPage, true)} />
                         <Route exact path={RouteEnum.Home} component={withAuth(DashboardPage)} />
-                        <Route path={RouteEnum.Record} component={withAuth(RecordPage)} />
-                        <Route path={RouteEnum.Stream} component={withAuth(StreamPage)} />
-                        <Route path={RouteEnum.AutoRouting} component={withAuth(AutoRoutingPage)} />
-                        <Route path={RouteEnum.FilesDownload} component={withAuth(FilesDownloadPage)} />
+                        <Route path={RouteEnum.Record} component={withAuth(RecordPage, true)} />
+                        <Route path={RouteEnum.Stream} component={withAuth(StreamPage, true)} />
+                        <Route path={RouteEnum.AutoRouting} component={withAuth(AutoRoutingPage, true)} />
+                        <Route path={RouteEnum.FilesDownload} component={withAuth(FilesDownloadPage, true)} />
                     </Switch>
                 </Suspense>
             </ConnectedRouter>

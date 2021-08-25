@@ -10,7 +10,7 @@ const mapStateToProps = (state) => ({
     user: state.authReducer.user
 })
 
-const withAuth = (ComponentToProtect) =>
+const withAuth = (ComponentToProtect, isPrivatePath) =>
     connect(mapStateToProps)((props) => {
         const { dispatch, user } = props;
 
@@ -18,17 +18,23 @@ const withAuth = (ComponentToProtect) =>
 
         const [redirectLogin, setRedirectLogin] = useState(false);
 
+        const [newUser, setNewUser] = useState(user);
+
         useEffect(() => {
             const validateUser = async () => {
                 try {
                     const token = AuthService.getToken();
+                    let tokenData = null;
+
                     if (token) {
-                        let tokenData = AuthService.decryptToken(token);
+                        tokenData = AuthService.decryptToken(token);
                         dispatch(AuthAction.saveUser(tokenData));
                     } else {
                         setRedirectLogin(true);
                     }
-                    if (user && user.userId) {
+
+                    if (tokenData && tokenData.userId) {
+                        setNewUser(tokenData);
                         setLoading(false);
                     } else {
                         throw new Error('Login required');
@@ -54,6 +60,10 @@ const withAuth = (ComponentToProtect) =>
 
         if (redirectLogin) {
             return <Redirect to="/login" />;
+        }
+
+        if (isPrivatePath && newUser.role !== 'cms-admin') {
+            return <Redirect to="/" />;
         }
 
         return (
