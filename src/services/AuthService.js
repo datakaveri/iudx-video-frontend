@@ -1,3 +1,5 @@
+import jwt from 'jwt-decode';
+
 const getToken = () => {
     return window.sessionStorage.getItem('token');
 };
@@ -7,7 +9,7 @@ const setToken = (token) => {
 };
 
 const decryptToken = (token) => {
-    return {};
+    return jwt(token);
 }
 
 const AuthService = {

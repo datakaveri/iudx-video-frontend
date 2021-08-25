@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
 import ServerAction from '../../stores/servers/ServerAction';
 import { connect } from 'react-redux';
 import StreamAction from 'stores/stream/StreamAction';
 
+const mapStateToProps = (state) => ({
+    user: state.authReducer.user
+})
+
 const withAuth = (ComponentToProtect) =>
-    connect()((props) => {
-        const { dispatch } = props;
+    connect(mapStateToProps)((props) => {
+        const { dispatch, user } = props;
 
         const [loading, setLoading] = useState(true);
 
@@ -16,11 +19,10 @@ const withAuth = (ComponentToProtect) =>
         useEffect(() => {
             const validateUser = async () => {
                 try {
-                    const response = await axios.get('/validate-token');
-                    if (response.status === 200) {
+                    if (user && user.userId) {
                         setLoading(false);
                     } else {
-                        throw new Error(response.error);
+                        throw new Error('Login required');
                     }
                 } catch (error) {
                     setRedirectLogin(true);

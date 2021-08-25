@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const Login = (props) => {
-    const { history } = props;
+    const { history, dispatch } = props;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -45,7 +45,7 @@ const Login = (props) => {
 
             // Decrypt token and update data in store
             let tokenData = AuthService.decryptToken(data.token);
-            AuthAction.saveUser(tokenData);
+            dispatch(AuthAction.saveUser(tokenData));
             history.push('/');
         } catch (error) {
             if (error.response) {
