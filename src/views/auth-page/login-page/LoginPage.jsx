@@ -8,14 +8,26 @@ import NavBar from '../../shared/nav-bar/NavBar';
 import axios from 'axios';
 import AuthService from 'services/AuthService';
 import AuthAction from 'stores/auth/AuthAction';
+import { useEffect } from 'react';
 
 const mapStateToProps = (state, ownProps) => {
     return {
         token: state.authReducer.token,
+        user: state.authReducer.user,
     };
 };
 
 const Login = (props) => {
+
+    useEffect(() => {
+        const token = AuthService.getToken();
+        if (token) {
+            let tokenData = AuthService.decryptToken(token);
+            dispatch(AuthAction.saveUser(tokenData));
+            history.push('/');
+        }
+    }, []);
+
     const { history, dispatch } = props;
 
     const [email, setEmail] = useState('');
