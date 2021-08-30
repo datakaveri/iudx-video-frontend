@@ -7,7 +7,13 @@ export default class ActionUtility {
         const model = await effect(...args);
         const isError = model instanceof HttpErrorResponseModel;
 
-        dispatch(ActionUtility.createAction(`${actionType}_FINISHED`, model, isError));
+        if (isError) {
+            dispatch(ActionUtility.createAction(`${actionType}_FINISHED`, null, isError));
+        }
+        else {
+            dispatch(ActionUtility.createAction(`${actionType}_FINISHED`, model, isError));
+        }
+
 
         return model;
     }

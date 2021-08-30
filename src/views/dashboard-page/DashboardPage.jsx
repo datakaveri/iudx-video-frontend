@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 
-import NavBar from '../shared/nav-bar/NavBar';
-import TablePagination from '../shared/table-pagination/TablePagination';
-import CameraAction from '../../stores/camera/CameraAction';
+import NavBar from 'views/shared/nav-bar/NavBar';
+import TablePagination from 'views/shared/table-pagination/TablePagination';
+import CameraDetailsModal from 'views/dashboard-page/components/camera-details-modal/CameraDetailsModal';
+import StreamsListModal from 'views/dashboard-page/components/Streams-list-modal/StreamsListModal';
+import CameraAction from 'stores/camera/CameraAction';
 import './DashboardPage.scss';
 
 const mapStateToProps = (state, ownProps) => {
@@ -12,29 +14,60 @@ const mapStateToProps = (state, ownProps) => {
         token: state.authReducer.token,
         cameras: state.cameraReducer.cameras,
         camerasPageInfo: state.cameraReducer.camerasPageInfo,
+        streams: state.cameraReducer.streams,
     };
 };
 
-const defaultPageItemSize = 5;
+const defaultPageItemSize = 3;
 const totalPageOnView = 5;
 
 const Dashboard = (props) => {
 
-    const { dispatch, cameras, camerasPageInfo } = props;
+    const { dispatch, cameras, camerasPageInfo, streams } = props;
+
+    const [showCameraDetailsModal, setShowCameraDetailsModal] = useState(false);
+
+    const [showStreamsListModal, setshowStreamsListModal] = useState(false);
+
+    const [selectedCameraData, setSelectedCameraData] = useState({});
+
+    useEffect(() => {
+        dispatch(CameraAction.listCameras({ page: 1, size: defaultPageItemSize }));
+    }, [dispatch]);
 
     const handlePageClick = async (e, index) => {
         e.preventDefault();
         dispatch(CameraAction.listCameras({ page: index, size: defaultPageItemSize }));
     }
 
-    useEffect(() => {
-        dispatch(CameraAction.listCameras({ page: 1, size: defaultPageItemSize }));
-    }, [dispatch]);
+    const handleCameraDetailsClick = (camera) => {
+        setSelectedCameraData(camera);
+        setShowCameraDetailsModal(true);
+    }
 
+    const handleStreamsListClick = (cameraId) => {
+        dispatch(CameraAction.listStreamsByCamera({ cameraId }));
+        setshowStreamsListModal(true);
+    }
 
     return (
         <div>
             <NavBar />
+
+            <CameraDetailsModal
+                show={showCameraDetailsModal}
+                setIsShowing={setShowCameraDetailsModal}
+                title={"Camera Details"}
+                camera={selectedCameraData}
+            />
+
+            <StreamsListModal
+                show={showStreamsListModal}
+                setIsShowing={setshowStreamsListModal}
+                title={"Available Streams"}
+                streams={streams}
+            />
+
             <div className="table-wrapper">
                 <h4 >Registered Cameras</h4>
                 <TablePagination
@@ -44,16 +77,14 @@ const Dashboard = (props) => {
                     totalPageOnView={totalPageOnView}
                 />
             </div>
+
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>Number</th>
+                        <th>Camera Number</th>
                         <th>Name</th>
-                        <th>Type</th>
-                        <th>Usage</th>
-                        <th>Orientation</th>
-                        <th>City</th>
                         <th>Location</th>
+                        <th>Details</th>
                         <th>Streams</th>
                     </tr>
                 </thead>
@@ -63,21 +94,23 @@ const Dashboard = (props) => {
                             <tr key={i}>
                                 <td>{camera.cameraNum}</td>
                                 <td>{camera.cameraName}</td>
-                                <td>{camera.cameraType}</td>
-                                <td>{camera.cameraUsage}</td>
-                                <td>{camera.cameraOrientation}</td>
-                                <td>{camera.city}</td>
                                 <td>{camera.location}</td>
                                 <td className="td-stream-column">
-                                    <Button color="info" onClick={() => { }}>
-                                        Streams
+                                    <Button color="info" onClick={() => handleCameraDetailsClick(camera)}>
+                                        Show Details
+                                    </Button>
+                                </td>
+                                <td className="td-stream-column">
+                                    <Button color="info" onClick={() => handleStreamsListClick(camera.cameraId)}>
+                                        Show Streams
                                     </Button>
                                 </td>
                             </tr>
                         ))}
                 </tbody>
             </Table>
-        </div>
+
+        </div >
     );
 };
 
