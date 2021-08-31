@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router-dom';
 import RouteEnum from '../constants/RoutesEnum';
 import Loading from './shared/loading/Loading';
 import withAuth from './auth-page/withAuth';
-import FilesDownloadPage from './files-download-page/FilesDownloadPage';
 
 // lazy loading pages
 const LoginPage = lazy(() => import('./auth-page/login-page/LoginPage'));
@@ -12,9 +11,6 @@ const AdminPage = lazy(() => import('./admin-page/AdminPage'));
 const RegisterPage = lazy(() => import('./auth-page/register-page/RegisterPage'));
 const EmailConfirmPage = lazy(() => import('./auth-page/email-confirm-page/EmailConfirmPage'));
 const DashboardPage = lazy(() => import('./dashboard-page/DashboardPage'));
-const RecordPage = lazy(() => import('./record-page/RecordPage'));
-const StreamPage = lazy(() => import('./stream-page/StreamPage'));
-const AutoRoutingPage = lazy(() => import('./auto-routing-page/AutoRoutingPage'));
 
 const App = (props) => {
     const { history } = props;
@@ -29,10 +25,6 @@ const App = (props) => {
                         <Route path={RouteEnum.Confirm} component={EmailConfirmPage} />
                         <Route path={RouteEnum.Admin} component={withAuth(AdminPage, true)} />
                         <Route exact path={RouteEnum.Home} component={withAuth(DashboardPage)} />
-                        <Route path={RouteEnum.Record} component={withAuth(RecordPage, true)} />
-                        <Route path={RouteEnum.Stream} component={withAuth(StreamPage, true)} />
-                        <Route path={RouteEnum.AutoRouting} component={withAuth(AutoRoutingPage, true)} />
-                        <Route path={RouteEnum.FilesDownload} component={withAuth(FilesDownloadPage, true)} />
                     </Switch>
                 </Suspense>
             </ConnectedRouter>

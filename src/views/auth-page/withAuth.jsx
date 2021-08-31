@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import ServerAction from '../../stores/servers/ServerAction';
 import { connect } from 'react-redux';
 import StreamAction from 'stores/stream/StreamAction';
 import AuthService from 'services/AuthService';
@@ -47,14 +46,6 @@ const withAuth = (ComponentToProtect, isPrivatePath) =>
 
             validateUser();
         }, []);
-
-        useEffect(() => {
-            if (!(redirectLogin || loading)) {
-                dispatch(ServerAction.nginxStatsReceive());
-                dispatch(ServerAction.rtspServerStatsReceive());
-                dispatch(StreamAction.streamStatusReceive());
-            }
-        }, [dispatch, loading, redirectLogin]);
 
         if (loading) return null;
 

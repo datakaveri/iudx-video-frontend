@@ -8,12 +8,11 @@ export default class ActionUtility {
         const isError = model instanceof HttpErrorResponseModel;
 
         if (isError) {
-            dispatch(ActionUtility.createAction(`${actionType}_FINISHED`, null, isError));
+            dispatch(ActionUtility.createAction(`${actionType}_ERROR`, model, isError));
         }
         else {
             dispatch(ActionUtility.createAction(`${actionType}_FINISHED`, model, isError));
         }
-
 
         return model;
     }
