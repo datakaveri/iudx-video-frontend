@@ -4,19 +4,20 @@ import StreamAction from './StreamAction';
 export default class StreamReducer extends BaseReducer {
     initialState = {
         streams: [],
-        error : {}
+        error: {}
     };
 
     [StreamAction.GET_STREAMS_FINISHED](state, action) {
         return {
             ...state,
-            streams: action.payload,
+            streams: action.payload.results,
         };
     }
 
     [StreamAction.GET_STREAMS_ERROR](state, action) {
         return {
             ...state,
+            streams: [],
             error: action.payload,
             streams: []
         };

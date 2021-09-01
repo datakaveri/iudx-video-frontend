@@ -4,17 +4,14 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 const CustomModal = (props) => {
     return (
-        <div>
-            <Modal
-                isOpen={props.isShowing}
-                toggle={() => { props.setIsShowing(!props.isShowing) }}
-                size={props.size}
-                className={props.className}
-                scrollable={props.scrollable}
-            >
-                {props.children}
-            </Modal>
-        </div>
+        <Modal
+            isOpen={props.isShowing}
+            toggle={() => { props.setIsShowing() }}
+            size={props.size}
+            scrollable={props.scrollable}
+        >
+            {props.children}
+        </Modal>
     );
 }
 

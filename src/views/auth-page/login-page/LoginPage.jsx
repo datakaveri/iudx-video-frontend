@@ -70,7 +70,7 @@ const Login = (props) => {
         <div>
             <NavBar logout={false} />
             <FormContainer>
-                <h1>IUDX Admin Login</h1>
+                <h1>IUDX Video Server Login</h1>
                 {message && <Alert variant="danger">{message}</Alert>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="email">

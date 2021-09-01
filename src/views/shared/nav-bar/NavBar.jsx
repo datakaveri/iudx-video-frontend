@@ -27,7 +27,7 @@ const NavBar = (props) => {
             <nav className="navbar navbar-light bg-light navbar-expand">
                 <Link to={'/'} className="navbar-brand">
                     <img className="logo-style" src={logo} alt="Admin" />
-                    IUVDX Admin
+                    IUDX Video Server
                 </Link>
 
                 {user && user.role === 'cms-admin' && <Link to="/admin" className="nav-item nav-link">Admin</Link>}

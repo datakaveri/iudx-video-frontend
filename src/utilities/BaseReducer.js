@@ -9,7 +9,7 @@ export default class BaseReducer {
 
         // if the action type "method" const is undefined or the action is an error
         // return the state.
-        if (!method || action.error) {
+        if (!method) {
             return state;
         }
 

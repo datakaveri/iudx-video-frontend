@@ -11,6 +11,7 @@ const AdminPage = lazy(() => import('./admin-page/AdminPage'));
 const RegisterPage = lazy(() => import('./auth-page/register-page/RegisterPage'));
 const EmailConfirmPage = lazy(() => import('./auth-page/email-confirm-page/EmailConfirmPage'));
 const DashboardPage = lazy(() => import('./dashboard-page/DashboardPage'));
+const CameraPage = lazy(() => import('./camera-page/CameraPage'));
 
 const App = (props) => {
     const { history } = props;
@@ -25,6 +26,7 @@ const App = (props) => {
                         <Route path={RouteEnum.Confirm} component={EmailConfirmPage} />
                         <Route path={RouteEnum.Admin} component={withAuth(AdminPage, true)} />
                         <Route exact path={RouteEnum.Home} component={withAuth(DashboardPage)} />
+                        <Route path={RouteEnum.Cameras} component={withAuth(CameraPage)} />
                     </Switch>
                 </Suspense>
             </ConnectedRouter>

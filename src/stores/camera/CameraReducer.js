@@ -27,12 +27,4 @@ export default class CameraReducer extends BaseReducer {
         };
     }
 
-    [CameraAction.LIST_STREAMS_FINISHED](state, action) {
-        console.log(action);
-        return {
-            ...state,
-            streams: action.payload.results,
-        };
-    }
-
 }

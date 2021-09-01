@@ -1,23 +1,42 @@
 
-.table-wrapper{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px; 
-}
+.server-container {
+    margin-top: 40px;
 
-.table-wrapper > *:first-child{
-    margin-left: 20px; 
-}
+    .header {
+        text-align: center;
 
-.table-wrapper > *:last-child{
-    margin-right: 50px; 
-}
+        .title {
+            font-size: 20px;
+        }
+    }
 
-.table {
-    width: 98%;
-    margin: auto;
-}
+    .server-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 50px 150px 50px 150px;
 
-.td-stream-column {
-    text-align: center;
+        .card-a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card {
+            width: 12rem;
+            height: 8rem;
+            margin: 10px;
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border-radius: 10px;
+
+            :hover {
+                background-color: rgb(235, 235, 235);
+            }
+
+            .card-body {
+                text-align: center;
+                padding: 2.25rem;
+            }
+        }
+    }
 }

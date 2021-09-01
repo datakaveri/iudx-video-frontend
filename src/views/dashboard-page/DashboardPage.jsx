@@ -1,116 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button } from 'reactstrap';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 
 import NavBar from 'views/shared/nav-bar/NavBar';
-import TablePagination from 'views/shared/table-pagination/TablePagination';
-import CameraDetailsModal from 'views/dashboard-page/components/camera-details-modal/CameraDetailsModal';
-import StreamsListModal from 'views/dashboard-page/components/Streams-list-modal/StreamsListModal';
-import CameraAction from 'stores/camera/CameraAction';
+import ServerAction from 'stores/servers/ServerAction';
 import './DashboardPage.scss';
-import StreamAction from 'stores/stream/StreamAction';
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        token: state.authReducer.token,
-        cameras: state.cameraReducer.cameras,
-        camerasPageInfo: state.cameraReducer.camerasPageInfo,
-        streams: state.streamReducer.streams,
+        registeredServers: state.serverReducer.registeredServers,
     };
 };
 
-const defaultPageItemSize = 3;
-const totalPageOnView = 5;
-
 const Dashboard = (props) => {
 
-    const { dispatch, cameras, camerasPageInfo, streams } = props;
-
-    const [showCameraDetailsModal, setShowCameraDetailsModal] = useState(false);
-
-    const [showStreamsListModal, setshowStreamsListModal] = useState(false);
-
-    const [selectedCameraData, setSelectedCameraData] = useState({});
+    const { dispatch, registeredServers } = props;
 
     useEffect(() => {
-        dispatch(CameraAction.listCameras({ page: 1, size: defaultPageItemSize }));
+        dispatch(ServerAction.listRegisteredServers());
     }, [dispatch]);
 
-    const handlePageClick = async (e, index) => {
+    const handleServerClick = (e, serverId) => {
         e.preventDefault();
-        dispatch(CameraAction.listCameras({ page: index, size: defaultPageItemSize }));
-    }
-
-    const handleCameraDetailsClick = (camera) => {
-        setSelectedCameraData(camera);
-        setShowCameraDetailsModal(true);
-    }
-
-    const handleStreamsListClick = (cameraId) => {
-        dispatch(StreamAction.getStreams(cameraId));
-        setshowStreamsListModal(true);
+        if (serverId) {
+            dispatch(push('cameras', { serverId }));
+        }
     }
 
     return (
         <div>
             <NavBar />
 
-            <CameraDetailsModal
-                show={showCameraDetailsModal}
-                setIsShowing={setShowCameraDetailsModal}
-                title={"Camera Details"}
-                camera={selectedCameraData}
-            />
+            <div className="server-container">
 
-            <StreamsListModal
-                show={showStreamsListModal}
-                setIsShowing={setshowStreamsListModal}
-                title={"Available Streams"}
-                streams={streams}
-            />
+                <div className="header">
+                    <p className="title">Find cameras by registered servers</p>
+                </div>
 
-            <div className="table-wrapper">
-                <h4 >Registered Cameras</h4>
-                <TablePagination
-                    totalPages={camerasPageInfo.totalPages}
-                    currentPage={camerasPageInfo.currentPage}
-                    handlePageClick={handlePageClick}
-                    totalPageOnView={totalPageOnView}
-                />
+                <div className="server-cards">
+                    {
+                        Array.isArray(registeredServers) && registeredServers.length > 0 ?
+                            registeredServers.map((server, i) => (
+                                <a className="card-a" key={i} onClick={(e) => handleServerClick(e, server.serverId)} href="/#">
+                                    <div className="card">
+                                        <div className="card-body">
+                                            <h5>{server.serverName}</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            ))
+                            : <h5>No servers to display</h5>
+                    }
+                </div>
             </div>
-
-            <Table striped bordered hover>
-                <thead>
-                    <tr>
-                        <th>Camera Number</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Details</th>
-                        <th>Streams</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(cameras) &&
-                        cameras.map((camera, i) => (
-                            <tr key={i}>
-                                <td>{camera.cameraNum}</td>
-                                <td>{camera.cameraName}</td>
-                                <td>{camera.location}</td>
-                                <td className="td-stream-column">
-                                    <Button color="info" onClick={() => handleCameraDetailsClick(camera)}>
-                                        Show Details
-                                    </Button>
-                                </td>
-                                <td className="td-stream-column">
-                                    <Button color="info" onClick={() => handleStreamsListClick(camera.cameraId)}>
-                                        Show Streams
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </Table>
-
         </div >
     );
 };
