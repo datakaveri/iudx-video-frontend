@@ -8,7 +8,7 @@ const CameraDetailsModal = (props) => {
     return (
         <CustomModal
             isShowing={props.show}
-            setIsShowing={() => props.setIsShowing(false)}
+            setIsShowing={() => props.setIsShowing(!props.show)}
         >
 
             <CustomModalHeader> {title} </CustomModalHeader>
