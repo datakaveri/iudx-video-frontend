@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Table, Button } from 'reactstrap';
+import AuthService from 'services/AuthService';
 import StreamAction from 'stores/stream/StreamAction';
 import LoadingIconButton from 'views/shared/button/LoadingIconButton';
 import { CustomModal, CustomModalBody, CustomModalHeader, CustomModalFooter } from 'views/shared/modal/Modal';
@@ -17,6 +18,11 @@ const StreamsListModal = (props) => {
             showNotification('deafult', 'Success', 'Stream request placed. Please check the status of the stream later');
         });
     };
+
+    const copyToClipboard = (url) => {
+        let text = `ffplay ${url.replace("<TOKEN>", AuthService.getToken())}`
+        navigator.clipboard.writeText(text);
+    }
 
     return (
         <CustomModal isShowing={props.show} setIsShowing={() => props.setIsShowing(false)} size={'lg'} className="modal-container" scrollable={true}>
@@ -48,7 +54,7 @@ const StreamsListModal = (props) => {
                                         </td>
                                         <td className="td-stream-column">
                                             {(stream.isPublishing && stream.urlTemplate) ? (
-                                                <>Copy</>
+                                                <Button color="info" onClick={() => copyToClipboard(stream.urlTemplate)}>Copy Play Command</Button> 
                                             ) : (
                                                 <LoadingIconButton
                                                     btnText="Stream Request"
