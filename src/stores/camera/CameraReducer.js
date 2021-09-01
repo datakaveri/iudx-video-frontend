@@ -4,7 +4,6 @@ import CameraAction from './CameraAction';
 export default class CameraReducer extends BaseReducer {
     initialState = {
         cameras: [],
-        streams: [],
         camerasPageInfo: {
             currentPage: 0,
             totalItems: 0,

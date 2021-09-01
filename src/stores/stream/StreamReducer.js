@@ -10,7 +10,7 @@ export default class StreamReducer extends BaseReducer {
     [StreamAction.GET_STREAMS_FINISHED](state, action) {
         return {
             ...state,
-            streams: action.payload.results,
+            streams: action.payload,
         };
     }
 
@@ -19,7 +19,6 @@ export default class StreamReducer extends BaseReducer {
             ...state,
             streams: [],
             error: action.payload,
-            streams: []
         };
     }
 
