@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Button } from 'reactstrap';
 import AuthService from 'services/AuthService';
 import StreamAction from 'stores/stream/StreamAction';
-import LoadingIconButton from 'views/shared/button/LoadingIconButton';
+import ActionIconButton from 'views/shared/button/ActionIconButton';
 import { CustomModal, CustomModalBody, CustomModalHeader, CustomModalFooter } from 'views/shared/modal/Modal';
 import { showNotification } from 'views/shared/notification/Notification';
 
@@ -19,9 +19,13 @@ const StreamsListModal = (props) => {
         });
     };
 
-    const copyToClipboard = (url) => {
+    const copyToClipboard = (url, callback) => {
         let text = `ffplay ${url.replace("<TOKEN>", AuthService.getToken())}`
         navigator.clipboard.writeText(text);
+
+        setTimeout(() => {
+            callback()
+        }, 5000);
     }
 
     return (
@@ -54,14 +58,22 @@ const StreamsListModal = (props) => {
                                         </td>
                                         <td className="td-stream-column">
                                             {(stream.isPublishing && stream.urlTemplate) ? (
-                                                <Button color="info" onClick={() => copyToClipboard(stream.urlTemplate)}>Copy Play Command</Button> 
+                                                <ActionIconButton 
+                                                    btnText="Copy Play Command"
+                                                    btnAfterText="Copied"
+                                                    onClickHandler={(callback) => {
+                                                        copyToClipboard(stream.urlTemplate, callback)
+                                                    }}
+                                                    actionType="copy"
+                                                />
                                             ) : (
-                                                <LoadingIconButton
+                                                <ActionIconButton
                                                     btnText="Stream Request"
-                                                    btnLoadingText="Requesting"
+                                                    btnAfterText="Requesting"
                                                     onClickHandler={(callback) => {
                                                         requestStream(stream.streamId, callback);
                                                     }}
+                                                    actionType="loading"
                                                 />
                                             )}
                                         </td>

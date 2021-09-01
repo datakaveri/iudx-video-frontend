@@ -26,7 +26,6 @@ export default class StreamEffect {
             return response;
         }
 
-        console.log(response);
         return response.data.data;
     }
 }
