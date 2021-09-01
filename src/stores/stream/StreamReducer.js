@@ -18,6 +18,7 @@ export default class StreamReducer extends BaseReducer {
         return {
             ...state,
             error: action.payload,
+            streams: []
         };
     }
 
@@ -25,8 +26,12 @@ export default class StreamReducer extends BaseReducer {
         return {
             ...state,
             streams: [...state.streams.map((stream) => {
-                if (stream === action.payload.streamId) {
+                if (stream.streamId === action.payload.streamId) {
                     // add stream url to stream here
+                    return {
+                        ...stream,
+                        urlTemplate: action.payload.urlTemplate
+                    }
                 }
                 return stream;
             })],

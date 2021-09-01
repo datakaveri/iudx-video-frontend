@@ -4,7 +4,7 @@ import HttpUtility from '../../utilities/HttpUtility';
 
 export default class StreamEffect {
     static async getAllStreams(cameraId) {
-        const endpoint = `${environment.api.server}/api/cameras/${cameraId}/streams`;
+        const endpoint = `${environment.api.server}/api/streams?cameraId=${cameraId}`;
 
         const response = await HttpUtility.get(endpoint);
 
@@ -12,7 +12,9 @@ export default class StreamEffect {
             return response;
         }
 
-        return response.data;
+        if (response.data && response.data.results && response.data.results.results) {
+            return response.data.results.results;
+        }
     }
 
     static async requestStream(streamId) {
@@ -24,6 +26,7 @@ export default class StreamEffect {
             return response;
         }
 
-        return response.data;
+        console.log(response);
+        return response.data.data;
     }
 }

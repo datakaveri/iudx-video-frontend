@@ -8,13 +8,14 @@ import CameraDetailsModal from 'views/dashboard-page/components/camera-details-m
 import StreamsListModal from 'views/dashboard-page/components/Streams-list-modal/StreamsListModal';
 import CameraAction from 'stores/camera/CameraAction';
 import './DashboardPage.scss';
+import StreamAction from 'stores/stream/StreamAction';
 
 const mapStateToProps = (state, ownProps) => {
     return {
         token: state.authReducer.token,
         cameras: state.cameraReducer.cameras,
         camerasPageInfo: state.cameraReducer.camerasPageInfo,
-        streams: state.cameraReducer.streams,
+        streams: state.streamReducer.streams,
     };
 };
 
@@ -46,7 +47,7 @@ const Dashboard = (props) => {
     }
 
     const handleStreamsListClick = (cameraId) => {
-        dispatch(CameraAction.listStreamsByCamera({ cameraId }));
+        dispatch(StreamAction.getStreams(cameraId));
         setshowStreamsListModal(true);
     }
 

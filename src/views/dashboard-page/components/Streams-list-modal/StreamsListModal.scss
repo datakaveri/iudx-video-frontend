@@ -1,7 +1,42 @@
+.stream-list-table th {
+    min-width: 148px;
+}
 
-.modal-container{
+.modal-container {
     max-width: 97%;
     width: auto;
     display: table;
+    min-width: 25%;
 }
 
+.td-stream-column {
+    min-width: 186px;
+}
+
+.stream-list-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    font-size: 18px;
+    color: grey;
+}
+
+.stream-status-container {
+    display: flex;
+    justify-content: center;
+}
+
+.green-circle {
+    background: green;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
+
+.red-circle {
+    background: red;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+}
