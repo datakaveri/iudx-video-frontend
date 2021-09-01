@@ -5,8 +5,8 @@ import { push } from 'connected-react-router';
 
 import NavBar from 'views/shared/nav-bar/NavBar';
 import TablePagination from 'views/shared/table-pagination/TablePagination';
-import CameraDetailsModal from 'views/dashboard-page/components/camera-details-modal/CameraDetailsModal';
-import StreamsListModal from 'views/dashboard-page/components/Streams-list-modal/StreamsListModal';
+import CameraDetailsModal from 'views/camera-page/components/camera-details-modal/CameraDetailsModal';
+import StreamsListModal from 'views/camera-page/components/Streams-list-modal/StreamsListModal';
 import CameraAction from 'stores/camera/CameraAction';
 import StreamAction from 'stores/stream/StreamAction';
 import './CameraPage.scss';

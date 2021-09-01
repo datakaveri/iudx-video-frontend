@@ -8,6 +8,7 @@ const CustomModal = (props) => {
             isOpen={props.isShowing}
             toggle={() => { props.setIsShowing() }}
             size={props.size}
+            className={props.className}
             scrollable={props.scrollable}
         >
             {props.children}
