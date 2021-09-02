@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Button } from 'reactstrap';
+import { Table } from 'reactstrap';
 import AuthService from 'services/AuthService';
 import StreamAction from 'stores/stream/StreamAction';
 import ActionIconButton from 'views/shared/button/ActionIconButton';
-import { CustomModal, CustomModalBody, CustomModalHeader, CustomModalFooter } from 'views/shared/modal/Modal';
+import ModalComponent from 'views/shared/modal/Modal';
 import { showNotification } from 'views/shared/notification/Notification';
 
 import './StreamsListModal.scss';
 
 const StreamsListModal = (props) => {
     const { title, streams, camera, dispatch } = props;
-
-    const [modalShow, setModalShow] = useState(false);
 
     const requestStream = (streamId, callback) => {
         dispatch(StreamAction.requestStream(streamId)).then(() => {
@@ -30,82 +28,67 @@ const StreamsListModal = (props) => {
         }, 5000);
     }
 
-    const handleStreamsBtnClick = () => {
+    const getStreams = (callback) => {
         dispatch(StreamAction.getStreams(camera.cameraId)).then(() => {
-            setModalShow(true);
+            callback();
         });
     }
 
     return (
-        <div>
-            <Button color="info" onClick={() => handleStreamsBtnClick()}>
-                Show Streams
-            </Button>
-
-            <CustomModal isShowing={modalShow} setIsShowing={() => setModalShow(false)} size={'lg'} className="modal-container" scrollable={true}>
-                <CustomModalHeader> {title} </CustomModalHeader>
-
-                <CustomModalBody>
-                    {Array.isArray(streams) && streams.length > 0 ? (
-                        <Table bordered hover className="stream-list-table">
-                            <thead>
-                                <tr>
-                                    <th>Stream Name</th>
-                                    <th>Stream Type</th>
-                                    <th>Is Active</th>
-                                    <th>Is Publishing</th>
-                                    <th>Stream Request</th>
+        <ModalComponent btn={"Show Streams"} title={title} size={'lg'} className="modal-container" scrollable={true} onClickHandler={(callback) => getStreams(callback)}>
+            {Array.isArray(streams) && streams.length > 0 ? (
+                <Table bordered hover className="stream-list-table">
+                    <thead>
+                        <tr>
+                            <th>Stream Name</th>
+                            <th>Stream Type</th>
+                            <th>Is Active</th>
+                            <th>Is Publishing</th>
+                            <th>Stream Request</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.isArray(streams) &&
+                            streams.map((stream, i) => (
+                                <tr key={i}>
+                                    <td>{stream.streamName}</td>
+                                    <td>{stream.streamType}</td>
+                                    <td>
+                                        <div className="stream-status-container">{stream.isActive ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
+                                    </td>
+                                    <td>
+                                        <div className="stream-status-container">{stream.isPublishing ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
+                                    </td>
+                                    <td className="td-stream-column">
+                                        {(stream.isPublishing && stream.urlTemplate) ? (
+                                            <ActionIconButton
+                                                btnText="Copy Play Command"
+                                                btnAfterText="Copied"
+                                                onClickHandler={(callback) => {
+                                                    copyToClipboard(stream.urlTemplate, callback)
+                                                }}
+                                                actionType="copy"
+                                            />
+                                        ) : (
+                                            <ActionIconButton
+                                                btnText="Stream Request"
+                                                btnAfterText="Requesting"
+                                                onClickHandler={(callback) => {
+                                                    requestStream(stream.streamId, callback);
+                                                }}
+                                                actionType="loading"
+                                            />
+                                        )}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {Array.isArray(streams) &&
-                                    streams.map((stream, i) => (
-                                        <tr key={i}>
-                                            <td>{stream.streamName}</td>
-                                            <td>{stream.streamType}</td>
-                                            <td>
-                                                <div className="stream-status-container">{stream.isActive ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
-                                            </td>
-                                            <td>
-                                                <div className="stream-status-container">{stream.isPublishing ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
-                                            </td>
-                                            <td className="td-stream-column">
-                                                {(stream.isPublishing && stream.urlTemplate) ? (
-                                                    <ActionIconButton
-                                                        btnText="Copy Play Command"
-                                                        btnAfterText="Copied"
-                                                        onClickHandler={(callback) => {
-                                                            copyToClipboard(stream.urlTemplate, callback)
-                                                        }}
-                                                        actionType="copy"
-                                                    />
-                                                ) : (
-                                                    <ActionIconButton
-                                                        btnText="Stream Request"
-                                                        btnAfterText="Requesting"
-                                                        onClickHandler={(callback) => {
-                                                            requestStream(stream.streamId, callback);
-                                                        }}
-                                                        actionType="loading"
-                                                    />
-                                                )}
-                                            </td>
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </Table>
-                    ) : (
-                        <div className="stream-list-empty">No streams found</div>
-                    )}
-                </CustomModalBody>
+                            ))}
+                    </tbody>
+                </Table>
+            ) : (
+                <div className="stream-list-empty">No streams found</div>
+            )}
 
-                <CustomModalFooter>
-                    <Button color="secondary" onClick={() => setModalShow(false)}>
-                        Close
-                    </Button>
-                </CustomModalFooter>
-            </CustomModal>
-        </div>
+        </ModalComponent>
     );
 };
 
