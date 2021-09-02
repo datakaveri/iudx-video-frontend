@@ -30,7 +30,7 @@ export default class StreamReducer extends BaseReducer {
                     // add stream url to stream here
                     return {
                         ...stream,
-                        urlTemplate: action.payload.urlTemplate,
+                        playbackUrlTemplate: action.payload.playbackUrlTemplate,
                         isPublishing: action.payload.isPublishing
                     }
                 }

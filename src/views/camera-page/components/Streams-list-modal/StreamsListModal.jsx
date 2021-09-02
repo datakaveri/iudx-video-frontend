@@ -70,12 +70,12 @@ const StreamsListModal = (props) => {
                                                 <div className="stream-status-container">{stream.isPublishing ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
                                             </td>
                                             <td className="td-stream-column">
-                                                {(stream.urlTemplate) ? (
+                                                {(stream.playbackUrlTemplate) ? (
                                                     <ActionIconButton
                                                         btnText="Copy Play Command"
                                                         btnAfterText="Copied"
                                                         onClickHandler={(callback) => {
-                                                            copyToClipboard(stream.urlTemplate, callback)
+                                                            copyToClipboard(stream.playbackUrlTemplate, callback)
                                                         }}
                                                         actionType="copy"
                                                     />
