@@ -43,7 +43,6 @@ const StreamsListModal = (props) => {
                             <th>Stream Name</th>
                             <th>Stream Type</th>
                             <th>Is Active</th>
-                            <th>Is Publishing</th>
                             <th>Stream Request</th>
                         </tr>
                     </thead>
@@ -55,9 +54,6 @@ const StreamsListModal = (props) => {
                                     <td>{stream.streamType}</td>
                                     <td>
                                         <div className="stream-status-container">{stream.isActive ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
-                                    </td>
-                                    <td>
-                                        <div className="stream-status-container">{stream.isPublishing ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
                                     </td>
                                     <td className="td-stream-column">
                                         {(stream.playbackUrlTemplate) ? (
