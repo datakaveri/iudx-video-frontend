@@ -1,48 +1,51 @@
-import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import React, { useState } from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
 
-const CustomModal = (props) => {
+const ModalComponent = ({
+    btn, btnColor, title, children, hideCancelBtn, className, modalSize, scrollable, onClickHandler
+}) => {
+
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => {
+        setModal((prevState) => !prevState);
+    };
+
+    const onBtnClick = () => {
+        onClickHandler(toggle);
+    }
+
     return (
-        <Modal
-            isOpen={props.isShowing}
-            toggle={() => { props.setIsShowing() }}
-            size={props.size}
-            className={props.className}
-            scrollable={props.scrollable}
-        >
-            {props.children}
-        </Modal>
+        <div>
+            <Button color={btnColor} onClick={onBtnClick}>
+                {btn}
+            </Button>
+            <Modal isOpen={modal} toggle={toggle} size={modalSize} className={className} scrollable={scrollable}>
+                <ModalHeader>{title}</ModalHeader>
+                <ModalBody>{children}</ModalBody>
+                <ModalFooter>
+                    {!hideCancelBtn && (
+                        <Button onClick={toggle} color="secondary">
+                            Cancel
+                        </Button>
+                    )}
+                </ModalFooter>
+            </Modal>
+        </div>
     );
 }
 
-const CustomModalBody = (props) => {
-    return (
-        <ModalBody>
-            {props.children}
-        </ModalBody>
-    );
+ModalComponent.defaultProps = {
+    btn: 'Show',
+    btnColor: 'info',
+    title: '',
+    children: '',
+    hideCancelBtn: false,
+    className: '',
+    modalSize: '',
+    scrollable: false,
+    onClickHandler: callback => callback(),
 }
 
-const CustomModalHeader = (props) => {
-    return (
-        <ModalHeader>
-            {props.children}
-        </ModalHeader>
-    );
-}
-
-const CustomModalFooter = (props) => {
-    return (
-        <ModalFooter>
-            {props.children}
-        </ModalFooter>
-    );
-}
-
-export {
-    CustomModal,
-    CustomModalBody,
-    CustomModalHeader,
-    CustomModalFooter,
-};
+export default ModalComponent;
