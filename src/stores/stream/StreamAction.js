@@ -15,9 +15,9 @@ export default class StreamAction {
         };
     }
 
-    static requestStream(streamId) {
+    static requestStream(streamId, requestType) {
         return async (dispatch, getState) => {
-            await ActionUtility.createThunkEffect(dispatch, StreamAction.STREAM_REQUEST, StreamEffect.requestStream, streamId);
+            await ActionUtility.createThunkEffect(dispatch, StreamAction.STREAM_REQUEST, StreamEffect.requestStream, streamId, requestType);
         };
     }
 }

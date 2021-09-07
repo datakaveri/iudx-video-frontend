@@ -17,8 +17,8 @@ export default class StreamEffect {
         }
     }
 
-    static async requestStream(streamId) {
-        const endpoint = `${environment.api.server}/api/streams/request/${streamId}?type=cloud`;
+    static async requestStream(streamId, requestType) {
+        const endpoint = `${environment.api.server}/api/streams/request/${streamId}?type=${requestType}`;
 
         const response = await HttpUtility.get(endpoint);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'reactstrap';
 import AuthService from 'services/AuthService';
@@ -6,14 +6,28 @@ import StreamAction from 'stores/stream/StreamAction';
 import ActionIconButton from 'views/shared/button/ActionIconButton';
 import ModalComponent from 'views/shared/modal/Modal';
 import { showNotification } from 'views/shared/notification/Notification';
+import ListDropdown from 'views/shared/dropdown/ListDropdown';
 
 import './StreamsListModal.scss';
 
 const StreamsListModal = (props) => {
     const { title, streams, camera, dispatch } = props;
 
-    const requestStream = (streamId, callback) => {
-        dispatch(StreamAction.requestStream(streamId)).then(() => {
+    const [newStreams, setNewStreams] = useState([]);
+
+    useEffect(() => {
+        if (Array.isArray(streams)) {
+            setNewStreams(streams.map(stream => {
+                return {
+                    ...stream,
+                    requestType: 'local'
+                }
+            }));
+        }
+    }, [streams]);
+
+    const requestStream = (streamId, requestType, callback) => {
+        dispatch(StreamAction.requestStream(streamId, requestType)).then(() => {
             callback();
             showNotification('deafult', 'Success', 'Stream request placed. Please check the status of the stream later');
         });
@@ -34,26 +48,43 @@ const StreamsListModal = (props) => {
         });
     }
 
+    const updateNewStreams = (key, item, value) => {
+        let updatedStreams = [...newStreams];
+        updatedStreams[key][item] = value;
+        setNewStreams(updatedStreams);
+    }
+
     return (
         <ModalComponent btn={"Show Streams"} title={title} size={'lg'} className="modal-container" scrollable={true} onClickHandler={(callback) => getStreams(callback)}>
-            {Array.isArray(streams) && streams.length > 0 ? (
+            {Array.isArray(newStreams) && newStreams.length > 0 ? (
                 <Table bordered hover className="stream-list-table">
                     <thead>
                         <tr>
                             <th>Stream Name</th>
                             <th>Stream Type</th>
                             <th>Is Active</th>
+                            <th>Request Type</th>
                             <th>Stream Request</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {Array.isArray(streams) &&
-                            streams.map((stream, i) => (
+                        {
+                            newStreams.map((stream, i) => (
                                 <tr key={i}>
                                     <td>{stream.streamName}</td>
                                     <td>{stream.streamType}</td>
                                     <td>
                                         <div className="stream-status-container">{stream.isActive ? <span className="green-circle"></span> : <span className="red-circle"></span>}</div>
+                                    </td>
+                                    <td>
+                                        <ListDropdown
+                                            defaultItemText={stream.requestType}
+                                            list={['local', 'cloud']}
+                                            onItemSelectHandler={(itemValue) => {
+                                                updateNewStreams(i, 'requestType', itemValue)
+                                            }}
+                                            disabled={stream.playbackUrlTemplate ? true : false}
+                                        />
                                     </td>
                                     <td className="td-stream-column">
                                         {(stream.playbackUrlTemplate) ? (
@@ -70,7 +101,7 @@ const StreamsListModal = (props) => {
                                                 btnText="Stream Request"
                                                 btnAfterText="Requesting"
                                                 onClickHandler={(callback) => {
-                                                    requestStream(stream.streamId, callback);
+                                                    requestStream(stream.streamId, stream.requestType, callback);
                                                 }}
                                                 actionType="loading"
                                             />
