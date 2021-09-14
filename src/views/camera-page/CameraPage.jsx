@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
 import NavBar from 'views/shared/nav-bar/NavBar';
 import TablePagination from 'views/shared/table-pagination/TablePagination';
+import ListDropdown from 'views/shared/dropdown/ListDropdown';
 import CameraDetailsModal from 'views/camera-page/components/camera-details-modal/CameraDetailsModal';
 import StreamsListModal from 'views/camera-page/components/Streams-list-modal/StreamsListModal';
 import CameraAction from 'stores/camera/CameraAction';
@@ -19,29 +20,31 @@ const mapStateToProps = (state, ownProps) => {
     };
 };
 
-const defaultPageItemSize = 5;
+const defaultRowsPerPage = 5;
 const totalPageOnView = 5;
 
 const CameraPage = (props) => {
 
     const { dispatch, cameras, camerasPageInfo, streams, state } = props;
 
+    const [rowsPerPage, setRowsPerPage] = useState(defaultRowsPerPage);
+
     useEffect(() => {
         if (state && state.serverId) {
-            dispatch(CameraAction.listCameras({ page: 1, size: defaultPageItemSize, serverId: state.serverId }));
+            dispatch(CameraAction.listCameras({ page: 1, size: rowsPerPage, serverId: state.serverId }));
         }
         else {
             dispatch(push('/'));
         }
-    }, [dispatch, state]);
+    }, [dispatch, state, rowsPerPage]);
 
     const handlePageClick = async (e, index) => {
         e.preventDefault();
-        dispatch(CameraAction.listCameras({ page: index, size: defaultPageItemSize, serverId: state.serverId }));
+        dispatch(CameraAction.listCameras({ page: index, size: rowsPerPage, serverId: state.serverId }));
     }
 
     return (
-        <div>
+        <div className="root-container">
             <NavBar />
 
             <div className="camera-container">
@@ -50,7 +53,7 @@ const CameraPage = (props) => {
                     <h4 className="title">Registered Cameras</h4>
                 </div>
                 <div className="content-border" />
-                <div className="table">
+                <div className="table-container">
                     {
                         Array.isArray(cameras) && cameras.length > 0 ? (
 
@@ -93,6 +96,14 @@ const CameraPage = (props) => {
                 </div>
                 <div className="content-border" />
                 <div className="table-footer">
+                    <ListDropdown
+                        text={"Rows per page"}
+                        btnColor={"primary"}
+                        defaultItemText={rowsPerPage}
+                        list={[5, 10, 15, 20]}
+                        onItemSelectHandler={(itemValue) => setRowsPerPage(itemValue)}
+                    />
+
                     <TablePagination className="pagination"
                         totalPages={camerasPageInfo.totalPages}
                         currentPage={camerasPageInfo.currentPage}
