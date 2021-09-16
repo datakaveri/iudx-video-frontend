@@ -10,6 +10,12 @@ import ListDropdown from 'views/shared/dropdown/ListDropdown';
 
 import './StreamsListModal.scss';
 
+const mapStateToProps = (state, ownProps) => {
+    return {
+        streams: state.streamReducer.streams,
+    };
+};
+
 const StreamsListModal = (props) => {
     const { title, streams, camera, dispatch } = props;
 
@@ -119,4 +125,4 @@ const StreamsListModal = (props) => {
     );
 };
 
-export default connect()(StreamsListModal);
+export default connect(mapStateToProps)(StreamsListModal);
