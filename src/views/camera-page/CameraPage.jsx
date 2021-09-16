@@ -22,6 +22,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const defaultRowsPerPage = 5;
 const totalPageOnView = 5;
+const isPaginationEnabled = false;
 
 const CameraPage = (props) => {
 
@@ -94,23 +95,27 @@ const CameraPage = (props) => {
                             <h5>No cameras to display</h5>
                     }
                 </div>
-                <div className="content-border" />
-                <div className="table-footer">
-                    <ListDropdown
-                        text={"Rows per page"}
-                        btnColor={"primary"}
-                        defaultItemText={rowsPerPage}
-                        list={[5, 10, 15, 20]}
-                        onItemSelectHandler={(itemValue) => setRowsPerPage(itemValue)}
-                    />
+                {isPaginationEnabled && (
+                    <>
+                        <div className="content-border" />
+                        <div className="table-footer">
+                            <ListDropdown
+                                text={"Rows per page"}
+                                btnColor={"primary"}
+                                defaultItemText={rowsPerPage}
+                                list={[5, 10, 15, 20]}
+                                onItemSelectHandler={(itemValue) => setRowsPerPage(itemValue)}
+                            />
 
-                    <TablePagination className="pagination"
-                        totalPages={camerasPageInfo.totalPages}
-                        currentPage={camerasPageInfo.currentPage}
-                        handlePageClick={handlePageClick}
-                        totalPageOnView={totalPageOnView}
-                    />
-                </div>
+                            <TablePagination className="pagination"
+                                totalPages={camerasPageInfo.totalPages}
+                                currentPage={camerasPageInfo.currentPage}
+                                handlePageClick={handlePageClick}
+                                totalPageOnView={totalPageOnView}
+                            />
+                        </div>
+                    </>
+                )}
             </div>
         </div >
     );
