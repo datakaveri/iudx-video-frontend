@@ -54,9 +54,9 @@ const CameraPage = (props) => {
                     <h4 className="title">Registered Cameras</h4>
                 </div>
                 <div className="content-border" />
-                <div className="table-container">
-                    {
-                        Array.isArray(cameras) && cameras.length > 0 ? (
+                {
+                    Array.isArray(cameras) && cameras.length > 0 ? (
+                        <div className="table-container">
 
                             <Table striped bordered hover>
                                 <thead>
@@ -91,10 +91,12 @@ const CameraPage = (props) => {
                                     ))}
                                 </tbody>
                             </Table>
-                        ) :
+                        </div>
+                    ) :
+                        <div className="no-records">
                             <h5>No cameras to display</h5>
-                    }
-                </div>
+                        </div>
+                }
                 {isPaginationEnabled && (
                     <>
                         <div className="content-border" />
