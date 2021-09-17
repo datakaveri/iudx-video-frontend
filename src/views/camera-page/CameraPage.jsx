@@ -95,7 +95,7 @@ const CameraPage = (props) => {
                     <div className="table-container">
                         <ToolKitProvider keyField="cameraId" data={cameras} columns={columns} search>
                             {(props) => (
-                                <div>
+                                <div className="table-container-searchbar-table">
                                     <SearchBar {...props.searchProps} />
                                     <hr />
                                     <BootstrapTable {...props.baseProps} />
