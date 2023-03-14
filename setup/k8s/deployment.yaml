@@ -1,0 +1,20 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+    name: video-server-ui
+    namespace: video-server
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: video-server-ui
+    template:
+        metadata:
+            labels:
+                app: video-server-ui
+        spec:
+            containers:
+                - name: video-server-ui
+                  image: datakaveri/video-server-ui:latest
+                  ports:
+                      - containerPort: 80
